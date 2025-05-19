@@ -3,30 +3,54 @@ import { useState } from 'react';
 export default function Home() {
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit() {
+  const handleSubmit = async () => {
+    if (!input.trim()) return;
+    setLoading(true);
+    setResponse('');
     const res = await fetch('/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: input })
+      body: JSON.stringify({ prompt: input }),
     });
     const data = await res.json();
-    setResponse(data.answer);
-  }
+    setResponse(data.answer || 'No response from AI.');
+    setLoading(false);
+  };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Orthotica AI Assistant</h1>
-      <textarea
-        rows='4'
-        cols='60'
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder='Enter a patient case...'
-      />
-      <br />
-      <button onClick={handleSubmit}>Submit</button>
-      <pre>{response}</pre>
+    <div className="min-h-screen bg-white text-gray-900 font-sans px-4 py-6">
+      <div className="max-w-2xl mx-auto space-y-6">
+        <header className="border-b pb-4">
+          <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
+          <h1 className="text-2xl font-bold">Orthotica AI Clinical Assistant</h1>
+          <p className="text-gray-600">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
+        </header>
+
+        <div>
+          <textarea
+            rows="5"
+            className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+            placeholder="Enter your clinical question or patient case here..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button
+            onClick={handleSubmit}
+            className="mt-3 bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+            disabled={loading}
+          >
+            {loading ? 'Thinking...' : 'Submit'}
+          </button>
+        </div>
+
+        {response && (
+          <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg whitespace-pre-wrap text-sm">
+            {response}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
