@@ -49,20 +49,8 @@ export default function Home() {
         {response && (
           <div
             className="prose prose-sm bg-gray-50 border border-gray-200 p-4 rounded-lg"
-            dangerouslySetInnerHTML={{ __html: marked(response) }}
+            dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
           />
-        )}
-      </div>
-    </div>
-  );
-}
-          </button>
-        </div>
-
-        {response && (
-          <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg whitespace-pre-wrap text-sm">
-            {response}
-          </div>
         )}
       </div>
     </div>
