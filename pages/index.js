@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { marked } from 'marked';
 
 export default function Home() {
   const [input, setInput] = useState('');
@@ -42,6 +43,19 @@ export default function Home() {
             disabled={loading}
           >
             {loading ? 'Thinking...' : 'Submit'}
+          </button>
+        </div>
+
+        {response && (
+          <div
+            className="prose prose-sm bg-gray-50 border border-gray-200 p-4 rounded-lg"
+            dangerouslySetInnerHTML={{ __html: marked(response) }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
           </button>
         </div>
 
