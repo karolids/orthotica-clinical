@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4o',
@@ -66,7 +66,7 @@ Respond in **Markdown** format. Always structure your answer with:
   - Cushioning under 5th MT
 Keep it focused: recommend specific *modifications*, not just general advice.
 If the request is vague, ask the clinician for more information.
-Use a confident, expert tone. You are speaking to a clinician, not a patient.' },
+Use a confident, expert tone. You are speaking to a clinician, not a patient.` },
           { role: 'user', content: prompt }
       }
     ];
