@@ -68,20 +68,30 @@ Keep it focused: recommend specific *modifications*, not just general advice.
 If the request is vague, ask the clinician for more information.
 Use a confident, expert tone. You are speaking to a clinician, not a patient.` },
           { role: 'user', content: prompt }
-        ]
+      }
+    ];
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages,
+        temperature: 0.5
       })
     });
 
-    const data = await completion.json();
+    const data = await response.json();
 
-    if (!completion.ok) {
-      console.error("OpenAI API error:", data);
-      return res.status(500).json({ error: "OpenAI API returned an error.", detail: data });
+    if (!response.ok) {
+      return res.status(500).json({ error: "OpenAI API error", detail: data });
     }
 
     res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
   } catch (err) {
-    console.error("Server error:", err);
-    res.status(500).json({ error: "Internal server error.", detail: err.toString() });
+    res.status(500).json({ error: "Internal server error", detail: err.toString() });
   }
 }
