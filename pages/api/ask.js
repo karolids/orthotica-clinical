@@ -66,7 +66,7 @@ Respond in **Markdown** format. Always structure your answer with:
   - Cushioning under 5th MT
 Keep it focused: recommend specific *modifications*, not just general advice.
 If the request is vague, ask the clinician for more information.
-Use a confident, expert tone. You are speaking to a clinician, not a patient. },
+Use a confident, expert tone. You are speaking to a clinician, not a patient.' },
           { role: 'user', content: prompt }
       }
     ];
