@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 export default async function handler(req, res) {
   try {
     const { messages } = req.body;
@@ -5,6 +8,31 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
       return res.status(500).json({ error: "Missing OPENAI_API_KEY" });
+    }
+
+    // Load clinical rules from public directory
+    const rulesPath = path.join(process.cwd(), "public", "clinical_rules.json");
+    let rulesSummary = '';
+    try {
+      const rulesData = fs.readFileSync(rulesPath, "utf-8");
+      const clinicalRules = JSON.parse(rulesData);
+
+      const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
+      const matchedMods = [];
+
+      for (const category of Object.keys(clinicalRules)) {
+        for (const finding of Object.keys(clinicalRules[category])) {
+          if (lastUserMsg.toLowerCase().includes(finding.toLowerCase())) {
+            matchedMods.push(`**Finding:** ${finding} (Category: ${category})\n- ${clinicalRules[category][finding].join("\n- ")}`);
+          }
+        }
+      }
+
+      if (matchedMods.length) {
+        rulesSummary = `\n\n## Modifications Based on Clinical Rules\n${matchedMods.join("\n\n")}`;
+      }
+    } catch (err) {
+      console.warn("Could not load clinical rules:", err.message);
     }
 
     const updatedMessages = [
@@ -22,8 +50,7 @@ Always include:
 - **Topcover or Midlayer Options** (e.g., EVA, Neoprene, Zfoam, Vinyl)
 
 Write like a clinical expert advising a podiatrist or orthotist.
-Use Markdown: headings (##), bold device names, bullet points, and rationale.
-`
+Use Markdown: headings (##), bold device names, bullet points, and rationale.${rulesSummary}`
       },
       ...messages
     ];
