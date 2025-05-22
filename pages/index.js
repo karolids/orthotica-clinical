@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans px-4 py-6">
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
         <header className="border-b pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
           <h1 className="text-2xl font-bold">Orthotica Clinical Assistant</h1>
