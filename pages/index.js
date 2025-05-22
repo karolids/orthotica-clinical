@@ -34,26 +34,26 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans px-4 py-6">
-      <div className="w-full max-w-4xl mx-auto space-y-6">
-        <header className="border-b pb-4">
+    <div className="min-h-screen bg-white text-black font-sans px-6 py-8">
+      <div className="w-full max-w-5xl mx-auto space-y-8">
+        <header className="border-b border-[#5B6670] pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
-          <h1 className="text-2xl font-bold">Orthotica Clinical Assistant</h1>
-          <p className="text-gray-600">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
+          <h1 className="text-2xl font-bold uppercase text-[#5B6670]">Orthotica Clinical Assistant</h1>
+          <p className="text-[#5B6670]">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
-        <div>
+        <div className="bg-[#F2F4F6] p-4 rounded-xl border border-[#5B6670]">
           <textarea
             ref={textareaRef}
             rows={1}
-            className="block w-full text-lg leading-relaxed border border-gray-300 rounded-lg p-4 resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-lg leading-relaxed border border-[#5B6670] rounded-md p-4 resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-[#F27497]"
             placeholder="Enter your clinical question or patient case here..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
           <button
             onClick={handleSubmit}
-            className="mt-4 bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="mt-4 bg-[#F27497] text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition"
             disabled={loading}
           >
             {loading ? 'Thinking...' : 'Submit'}
@@ -62,7 +62,7 @@ export default function Home() {
 
         {response && (
           <div
-            className="prose prose-lg bg-gray-50 border border-gray-200 p-6 rounded-lg"
+            className="prose prose-lg bg-white border border-[#F27497] p-6 rounded-xl shadow-sm"
             dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
           />
         )}
