@@ -44,12 +44,21 @@ export default function Home() {
 
         <div className="w-full">
           <textarea
-            ref={textareaRef}
-            rows={1}
-            className="w-full overflow-hidden border border-gray-300 rounded-lg p-4 text-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your clinical question or patient case here..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+           <textarea
+  ref={textareaRef}
+  rows={1}
+  style={{
+    width: '100%',
+    minWidth: '1000px',
+    fontSize: '1.125rem',
+    padding: '1rem',
+    lineHeight: '1.5',
+  }}
+  className="overflow-hidden border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+  placeholder="Enter your clinical question or patient case here..."
+  value={input}
+  onChange={(e) => setInput(e.target.value)}
+/>
           />
           <button
             onClick={handleSubmit}
