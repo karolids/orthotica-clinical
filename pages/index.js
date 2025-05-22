@@ -1,10 +1,27 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { marked } from 'marked';
 
 export default function Home() {
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
+  const textareaRef = useRef(null);
+
+  const adjustTextareaHeight = (el) => {
+    el.style.height = 'inherit';
+    el.style.height = `${el.scrollHeight}px`;
+  };
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      adjustTextareaHeight(textareaRef.current);
+    }
+  }, []);
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    adjustTextareaHeight(e.target);
+  };
 
   const handleSubmit = async () => {
     if (!input.trim()) return;
@@ -31,11 +48,12 @@ export default function Home() {
 
         <div>
           <textarea
-            rows="6"
-            className="w-full min-h-[120px] border border-gray-300 rounded-lg p-3 text-base resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ref={textareaRef}
+            rows={1}
+            className="w-full min-h-[120px] border border-gray-300 rounded-lg p-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your clinical question or patient case here..."
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
           />
           <button
             onClick={handleSubmit}
