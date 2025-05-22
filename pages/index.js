@@ -38,7 +38,7 @@ export default function Home() {
       <div className="w-full max-w-5xl mx-auto space-y-8">
         <header className="border-b border-orthoticaGray pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
-          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Orthotica Clinical Assistant</h1>
+          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi! I'm Francis, your Orthotica Labs Clinical Assistant</h1>
           <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
