@@ -44,8 +44,8 @@ export default function Home() {
           <div className="flex justify-center">
             <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-24 mb-4" />
           </div>
-          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi....I'm Francis, Orthotica's New Clinical Assistant!</h1>
-          <p className="text-orthoticaGray">Describe your patient’s condition, and I’ll recommend orthotic or AFO modifications.</p>
+          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Orthotica Clinical Assistant</h1>
+          <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
         <div className="bg-gray-100 p-4 rounded-xl border border-orthoticaGray">
@@ -62,7 +62,11 @@ export default function Home() {
             className="mt-4 min-w-[300px] bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition text-center"
             disabled={loading}
           >
-            {loading ? "I’m thinking... Please be patient, I’m just a Flamingo 🦩" : 'Submit'}
+            {loading ? (
+              <span>
+                I’m thinking<span className="dot-animate">.</span><span className="dot-animate">.</span><span className="dot-animate">.</span> Please be patient, I’m just a Flamingo 🦩
+              </span>
+            ) : 'Submit'}
           </button>
         </div>
 
