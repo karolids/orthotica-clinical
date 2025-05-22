@@ -62,7 +62,7 @@ export default function Home() {
             className="mt-4 min-w-[300px] bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition text-center"
             disabled={loading}
           >
-            {loading ? "I'm thinking... Please be patient, remember, I'm just a Flamingo 🦩" : 'Submit'}
+            {loading ? "I’m thinking... Please be patient, I’m just a Flamingo 🦩" : 'Submit'}
           </button>
         </div>
 
