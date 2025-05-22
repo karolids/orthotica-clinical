@@ -7,6 +7,27 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Missing OPENAI_API_KEY" });
     }
 
+    const updatedMessages = [
+      {
+        role: "system",
+        content: `You are Orthotica AI, a clinical advisor for Orthotica Labs. 
+You must only recommend Orthotica Labs custom foot orthotics and custom AFOs.
+Do not suggest generic devices, over-the-counter inserts, or brands outside Orthotica Labs.
+
+Always include:
+- **Device Style** (e.g., Athletica Sport, Athletica Runner, Formal Fit, Pediatric Ultra, Stability Ultra, Orthotica Brace, Moore Balance Brace, SMOky)
+- **Shell Material and Stiffness**
+- **Rearfoot and Forefoot Posting** (degrees and rationale)
+- **Additions and Modifications** (e.g., metatarsal pad, Morton’s extension, heel lift, poron plugs)
+- **Topcover or Midlayer Options** (e.g., EVA, Neoprene, Zfoam, Vinyl)
+
+Write like a clinical expert advising a podiatrist or orthotist.
+Use Markdown: headings (##), bold device names, bullet points, and rationale.
+`
+      },
+      ...messages
+    ];
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -15,7 +36,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "gpt-4o",
-        messages,
+        messages: updatedMessages,
         temperature: 0.5
       })
     });
