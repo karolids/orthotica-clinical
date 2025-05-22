@@ -62,12 +62,12 @@ export default function Home() {
           </button>
         </div>
 
-        {response && (
-          <div
-            className="min-w-[300px] mt-4 bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition text-center"
-            dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
-          />
-        )}
+{response && (
+  <div
+    className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm text-black"
+    dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
+  />
+)}
       </div>
     </div>
   );
