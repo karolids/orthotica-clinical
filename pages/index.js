@@ -25,14 +25,14 @@ export default function Home() {
       <div className="max-w-2xl mx-auto space-y-6">
         <header className="border-b pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
-          <h1 className="text-2xl font-bold">Orthotica AI Clinical Assistant</h1>
+          <h1 className="text-2xl font-bold">Orthotica Clinical Assistant</h1>
           <p className="text-gray-600">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
         <div>
           <textarea
-            rows="5"
-            className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+            rows="6"
+            className="w-full min-h-[120px] border border-gray-300 rounded-lg p-3 text-base resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your clinical question or patient case here..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
