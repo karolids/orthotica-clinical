@@ -34,31 +34,22 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans px-6 py-6">
-      <div className="w-full max-w-screen-xl mx-auto space-y-6">
+    <div className="min-h-screen bg-white text-gray-900 font-sans px-4 py-6">
+      <div className="w-full max-w-4xl mx-auto space-y-6">
         <header className="border-b pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
           <h1 className="text-2xl font-bold">Orthotica Clinical Assistant</h1>
           <p className="text-gray-600">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
-        <div className="w-full">
+        <div>
           <textarea
-           <textarea
-  ref={textareaRef}
-  rows={1}
-  style={{
-    width: '100%',
-    minWidth: '1000px',
-    fontSize: '1.125rem',
-    padding: '1rem',
-    lineHeight: '1.5',
-  }}
-  className="overflow-hidden border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-  placeholder="Enter your clinical question or patient case here..."
-  value={input}
-  onChange={(e) => setInput(e.target.value)}
-/>
+            ref={textareaRef}
+            rows={1}
+            className="block w-full text-lg leading-relaxed border border-gray-300 rounded-lg p-4 resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your clinical question or patient case here..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <button
             onClick={handleSubmit}
