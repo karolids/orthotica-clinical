@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans px-4 py-6">
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="w-full max-w-screen-xl mx-auto px-4 space-y-6">
         <header className="border-b pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
           <h1 className="text-2xl font-bold">Orthotica Clinical Assistant</h1>
@@ -46,12 +46,12 @@ export default function Home() {
 
         <div>
           <textarea
-            ref={textareaRef}
-            rows={1}
-            className="w-full overflow-hidden border border-gray-300 rounded-lg p-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your clinical question or patient case here..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+             ref={textareaRef}
+  rows={1}
+  className="w-full overflow-hidden border border-gray-300 rounded-lg p-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+  placeholder="Enter your clinical question or patient case here..."
+  value={input}
+  onChange={(e) => setInput(e.target.value)}
           />
           <button
             onClick={handleSubmit}
