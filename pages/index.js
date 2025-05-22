@@ -7,7 +7,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const textareaRef = useRef(null);
 
-  // Expand the textarea height based on scroll height
   const adjustTextareaHeight = () => {
     const el = textareaRef.current;
     if (el) {
@@ -16,7 +15,6 @@ export default function Home() {
     }
   };
 
-  // Adjust height every time input changes
   useEffect(() => {
     adjustTextareaHeight();
   }, [input]);
@@ -36,26 +34,26 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans px-4 py-6">
-      <div className="w-full max-w-screen-xl mx-auto px-4 space-y-6">
+    <div className="min-h-screen bg-white text-gray-900 font-sans px-6 py-6">
+      <div className="w-full max-w-screen-xl mx-auto space-y-6">
         <header className="border-b pb-4">
           <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
           <h1 className="text-2xl font-bold">Orthotica Clinical Assistant</h1>
           <p className="text-gray-600">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
-        <div>
+        <div className="w-full">
           <textarea
-             ref={textareaRef}
-  rows={1}
-  className="w-full overflow-hidden border border-gray-300 rounded-lg p-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-  placeholder="Enter your clinical question or patient case here..."
-  value={input}
-  onChange={(e) => setInput(e.target.value)}
+            ref={textareaRef}
+            rows={1}
+            className="w-full overflow-hidden border border-gray-300 rounded-lg p-4 text-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your clinical question or patient case here..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <button
             onClick={handleSubmit}
-            className="mt-3 bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="mt-4 bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition"
             disabled={loading}
           >
             {loading ? 'Thinking...' : 'Submit'}
@@ -64,7 +62,7 @@ export default function Home() {
 
         {response && (
           <div
-            className="prose prose-sm bg-gray-50 border border-gray-200 p-4 rounded-lg"
+            className="prose prose-lg bg-gray-50 border border-gray-200 p-6 rounded-lg"
             dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
           />
         )}
