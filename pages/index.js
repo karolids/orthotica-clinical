@@ -36,11 +36,13 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white text-orthoticaBlack font-sans px-6 py-8">
       <div className="w-full max-w-5xl mx-auto space-y-8">
-        <header className="border-b border-orthoticaGray pb-4">
-          <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-12 mb-2" />
-          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi there! I'm Francis the Flamingo!</h1>
-          <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
-        </header>
+        <header className="border-b border-orthoticaGray pb-4 text-center">
+  <div className="flex justify-center">
+    <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-24 mb-4" />
+  </div>
+  <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Orthotica Clinical Assistant</h1>
+  <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
+</header>
 
         <div className="bg-gray-100 p-4 rounded-xl border border-orthoticaGray">
           <textarea
