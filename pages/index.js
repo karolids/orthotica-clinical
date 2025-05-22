@@ -58,13 +58,13 @@ export default function Home() {
             className="mt-4 bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition"
             disabled={loading}
           >
-            {loading ? 'Thinking...' : 'Submit'}
+            {loading ? I'm thinking... Please be patient, I'm just a Flamingo 🦩 : 'Submit'}
           </button>
         </div>
 
         {response && (
           <div
-            className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
+            className="min-w-[300px] mt-4 bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition text-center"
             dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
           />
         )}
