@@ -16,9 +16,10 @@ export default async function handler(req, res) {
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
     const clinicalCaseHeader = `## Clinical Case\n${lastUserMsg}\n\n`;
 
+    let clinicalRules = {};
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
-      const clinicalRules = JSON.parse(rulesData);
+      clinicalRules = JSON.parse(rulesData);
 
       const matchedMods = [];
 
@@ -33,13 +34,16 @@ export default async function handler(req, res) {
       if (matchedMods.length) {
         rulesSummary = `\n\n## Modifications Based on Clinical Rules\n${matchedMods.join("\n\n")}`;
       }
+    } catch (e) {
+      console.warn("⚠️ Skipping clinical rules — file not found or invalid.");
+    }
 
-      const assistantHistory = messages.filter(m => m.role !== 'user');
+    const assistantHistory = messages.filter(m => m.role !== 'user');
 
-      const updatedMessages = [
-        {
-          role: "system",
-          content: `You are Orthotica AI, a clinical advisor for Orthotica Labs.
+    const updatedMessages = [
+      {
+        role: "system",
+        content: `You are Orthotica AI, a clinical advisor for Orthotica Labs.
 
 You specialize in recommending Orthotica Labs custom foot orthotics and custom AFOs only. Never suggest generic or off-the-shelf devices.
 
@@ -68,49 +72,41 @@ Include:
 Use Markdown with headings (##), **bold** styles, and bullet points. Only recommend Orthotica Labs products.
 
 ${rulesSummary}`
-        },
-        {
-          role: "user",
-          content: clinicalCaseHeader + lastUserMsg
-        },
-        ...assistantHistory
-      ];
+      },
+      {
+        role: "user",
+        content: clinicalCaseHeader + lastUserMsg
+      },
+      ...assistantHistory
+    ];
 
-      const openAiPayload = {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
         model: "gpt-4o",
         messages: updatedMessages,
         temperature: 0.5
-      };
+      })
+    });
 
-      console.log("📤 OpenAI Request Payload:", JSON.stringify(openAiPayload, null, 2));
+    const raw = await response.text();
+    console.log("📥 OpenAI Raw Response:", raw);
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(openAiPayload)
-      });
+    const data = JSON.parse(raw);
 
-      const raw = await response.text();
-      console.log("📥 OpenAI Raw Response:", raw);
-
-      const data = JSON.parse(raw);
-
-      if (!response.ok) {
-        console.error("‼️ OpenAI API Error:", data);
-        return res.status(500).json({ error: "OpenAI API error", detail: data });
-      }
-
-      res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
-
-    } catch (err) {
-      console.error("‼️ Internal server error:", err);
-      res.status(500).json({ error: "Internal server error", detail: err.toString() });
+    if (!response.ok) {
+      console.error("‼️ OpenAI API Error:", data);
+      return res.status(500).json({ error: "OpenAI API error", detail: data });
     }
-  } catch (outerErr) {
-    console.error("‼️ Fatal error:", outerErr);
-    res.status(500).json({ error: "Fatal error", detail: outerErr.toString() });
+
+    res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
+
+  } catch (err) {
+    console.error("‼️ Fatal error:", err);
+    res.status(500).json({ error: "Fatal error", detail: err.toString() });
   }
 }
