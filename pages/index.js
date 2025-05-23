@@ -44,7 +44,7 @@ export default function Home() {
           <div className="flex justify-center">
             <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-24 mb-4" />
           </div>
-          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Orthotica Clinical Assistant</h1>
+          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi, I'm Francis, your Orthotica Clinical Assistant</h1>
           <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
