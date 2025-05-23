@@ -12,11 +12,13 @@ export default async function handler(req, res) {
 
     const rulesPath = path.join(process.cwd(), "public", "clinical_rules.json");
     let rulesSummary = '';
+    const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
+    const clinicalCaseHeader = `## Clinical Case\n${lastUserMsg}\n\n`;
+
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
       const clinicalRules = JSON.parse(rulesData);
 
-      const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
       const matchedMods = [];
 
       for (const category of Object.keys(clinicalRules)) {
@@ -31,10 +33,6 @@ export default async function handler(req, res) {
         rulesSummary = `\n\n## Modifications Based on Clinical Rules\n${matchedMods.join("\n\n")}`;
       }
 
-      // Format the clinical case block
-      const clinicalCaseHeader = `## Clinical Case\n${lastUserMsg}\n\n`;
-
-      // Filter out previous user messages for safety
       const assistantHistory = messages.filter(m => m.role !== 'user');
 
       const updatedMessages = [
@@ -76,6 +74,8 @@ ${rulesSummary}`
         },
         ...assistantHistory
       ];
+
+      console.log("Sending to GPT:", updatedMessages);
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
