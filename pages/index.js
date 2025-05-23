@@ -74,7 +74,15 @@ export default function Home() {
           <>
             <div
               id="response-container"
-              className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
+              style={{
+                fontFamily: 'Arial, sans-serif',
+                padding: '24px',
+                lineHeight: '1.6',
+                backgroundColor: 'white',
+                border: '1px solid #F27497',
+                borderRadius: '12px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+              }}
               dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
             />
             <button
