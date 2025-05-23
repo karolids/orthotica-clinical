@@ -75,7 +75,15 @@ ${rulesSummary}`
         ...assistantHistory
       ];
 
-      console.log("Sending to GPT:", updatedMessages);
+      // Log outgoing payload
+      const openAiPayload = {
+        model: "gpt-4o",
+        messages: updatedMessages,
+        temperature: 0.5
+      };
+
+      console.log(">>> OpenAI Payload:");
+      console.log(JSON.stringify(openAiPayload, null, 2));
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -83,14 +91,13 @@ ${rulesSummary}`
           "Content-Type": "application/json",
           "Authorization": `Bearer ${apiKey}`
         },
-        body: JSON.stringify({
-          model: "gpt-4o",
-          messages: updatedMessages,
-          temperature: 0.5
-        })
+        body: JSON.stringify(openAiPayload)
       });
 
-      const data = await response.json();
+      const raw = await response.text();
+      console.log(">>> OpenAI Raw Response:", raw);
+
+      const data = JSON.parse(raw);
 
       if (!response.ok) {
         return res.status(500).json({ error: "OpenAI API error", detail: data });
