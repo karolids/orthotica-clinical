@@ -1,0 +1,34 @@
+{
+  "Pathology": {
+    "plantar fasciitis": [
+      "Deep heel seat to 5/8\"",
+      "3\u00b0 rearfoot varus post",
+      "Poron plug + 1/8\" heel cushion"
+    ],
+    "neuroma": [
+      "3/16\" metatarsal pad",
+      "Place 6mm distal to shell edge",
+      "Use poron or EVA padding"
+    ],
+    "achilles tendinitis": [
+      "Deep heel cup",
+      "0\u00b0 extrinsic rearfoot post",
+      "1/8\" bilateral heel lift"
+    ],
+    "hallux rigidus": [
+      "Add Morton\u2019s extension",
+      "Use full-length topcover",
+      "Medial forefoot post"
+    ],
+    "metatarsalgia": [
+      "3\u00b0 rearfoot varus post",
+      "Add 3/16\" metatarsal pad",
+      "Distal edge 6mm past shell"
+    ],
+    "pes cavus": [
+      "Add lateral wedge",
+      "Wide heel cup",
+      "Cushioning under 5th metatarsal"
+    ]
+  }
+}
