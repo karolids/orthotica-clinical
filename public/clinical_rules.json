@@ -1,5 +1,4 @@
-{
-  "Pathology": {
+Pathology": {
     "plantar fasciitis": [
       "Deep heel seat to 5/8\"",
       "3\u00b0 rearfoot varus post",
@@ -27,8 +26,56 @@
     ],
     "pes cavus": [
       "Add lateral wedge",
-      "Deep heel cup",
+      "Wide heel cup",
       "Cushioning under 5th metatarsal"
+    ],
+    "flat feet": [
+      "Inverted 4\u00b0 rearfoot post",
+      "Medial arch fill",
+      "Firm shell with minimal flex",
+      "Neoprene topcover for pronation control"
+    ],
+    "posterior tibial tendon dysfunction": [
+      "Deep medial heel cup",
+      "Medial flare",
+      "Rigid arch support"
+    ],
+    "diabetic neuropathy": [
+      "Accommodative EVA shell",
+      "No posting",
+      "Full-length topcover",
+      "Add poron padding under metatarsal heads and heel"
+    ],
+    "limb length discrepancy": [
+      "Add heel lift on shorter side",
+      "Ensure bilateral orthotics are symmetrical otherwise"
+    ],
+    "heel spur": [
+      "Heel cup to 5/8\" depth",
+      "Poron plug in central heel",
+      "0\u00b0 rearfoot post"
+    ]
+  },
+  "AFO_Indications": {
+    "foot drop": [
+      "Recommend: Orthotica Brace Articulated",
+      "AFO with dorsiflexion assist and lateral support"
+    ],
+    "balance issues in elderly": [
+      "Recommend: Moore Balance Brace",
+      "Improve proprioception and medial-lateral stability"
+    ],
+    "posterior tibial tendon rupture": [
+      "Recommend: Orthotica Brace",
+      "Provide medial ankle and arch support with restricted motion"
+    ],
+    "pediatric pronation": [
+      "Recommend: Pediatric Ultra",
+      "Subtalar joint control in small, flexible feet"
+    ],
+    "charcot foot": [
+      "Recommend: Custom CROW Walker AFO",
+      "Total contact design for offloading and stability"
     ]
   }
 }
