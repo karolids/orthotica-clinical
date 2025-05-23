@@ -7,6 +7,7 @@ export default async function handler(req, res) {
     const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
+      console.error("‼️ Missing OPENAI_API_KEY");
       return res.status(500).json({ error: "Missing OPENAI_API_KEY" });
     }
 
@@ -75,15 +76,13 @@ ${rulesSummary}`
         ...assistantHistory
       ];
 
-      // Log outgoing payload
       const openAiPayload = {
         model: "gpt-4o",
         messages: updatedMessages,
         temperature: 0.5
       };
 
-      console.log(">>> OpenAI Payload:");
-      console.log(JSON.stringify(openAiPayload, null, 2));
+      console.log("📤 OpenAI Request Payload:", JSON.stringify(openAiPayload, null, 2));
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -95,19 +94,23 @@ ${rulesSummary}`
       });
 
       const raw = await response.text();
-      console.log(">>> OpenAI Raw Response:", raw);
+      console.log("📥 OpenAI Raw Response:", raw);
 
       const data = JSON.parse(raw);
 
       if (!response.ok) {
+        console.error("‼️ OpenAI API Error:", data);
         return res.status(500).json({ error: "OpenAI API error", detail: data });
       }
 
       res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
+
     } catch (err) {
+      console.error("‼️ Internal server error:", err);
       res.status(500).json({ error: "Internal server error", detail: err.toString() });
     }
   } catch (outerErr) {
+    console.error("‼️ Fatal error:", outerErr);
     res.status(500).json({ error: "Fatal error", detail: outerErr.toString() });
   }
 }
