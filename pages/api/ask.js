@@ -103,7 +103,9 @@ ${rulesSummary}`
       return res.status(500).json({ error: "OpenAI API error", detail: data });
     }
 
-    res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
+    const aiAnswer = data.choices?.[0]?.message?.content || "No response from AI.";
+    const finalAnswer = `## Scenario\n${lastUserMsg}\n\n${aiAnswer}`;
+    res.status(200).json({ answer: finalAnswer });
 
   } catch (err) {
     console.error("‼️ Fatal error:", err);
