@@ -37,13 +37,6 @@ export default function Home() {
     setLoading(false);
   };
 
-  const renderHTML = (markdown) => {
-    return marked.parse(markdown, {
-      mangle: false,
-      headerIds: false,
-    });
-  };
-
   return (
     <div className="min-h-screen bg-white text-orthoticaBlack font-sans px-6 py-8">
       <div className="w-full max-w-5xl mx-auto space-y-8">
@@ -81,16 +74,8 @@ export default function Home() {
           <>
             <div
               id="response-container"
-              style={{
-                fontFamily: 'Arial, sans-serif',
-                padding: '24px',
-                lineHeight: '1.6',
-                backgroundColor: 'white',
-                border: '1px solid #F27497',
-                borderRadius: '12px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-              }}
-              dangerouslySetInnerHTML={{ __html: renderHTML(response) }}
+              className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
+              dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
             />
             <button
               onClick={exportToPDF}
