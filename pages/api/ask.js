@@ -61,11 +61,12 @@ Use the following format:
 (if provided, summarize briefly)
 
 ## Recommended Orthotic or AFO
-- **Device Style:** [Orthotica model name]
+- **Device Style:** (Athletica Sport, Athletica Sport Flex, Athletica Runner, Stability Ultra, Pediatric Ultra, Accommodative Ultra, Core Fit, Fashionista Fit, Formal Fit, EP Hybrid Flex, EP Hybrid Firm, EVA Trilaminate)
 - **Shell Material and Stiffness:**
 - **Rearfoot/Forefoot Posting:** (include degrees + reasoning if applicable)
 - **Additions/Modifications:** (e.g., met pad, heel lift, Morton’s extension)
-- **Topcover & Midlayer:** (e.g., EVA, Neoprene, Vinyl)
+- **Topcover** (e.g., EVA35, Neoprene, Vinyl, Vegan Leather)
+- **Midlayer** (e.g., O-Foam, Z-Foam, EVA25)
 
 ## Rationale
 Short paragraph explaining your choice using clinical reasoning.
