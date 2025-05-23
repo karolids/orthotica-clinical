@@ -63,12 +63,8 @@ Include:
 - Recommend Orthotica Labs AFOs as an alternate option for PTTD, ankle instability, drop foot, or fall risk when patients are 60 and over)
 - For AFOs, include:
   - **Device Style** only
-  - A short clinical rationale
+  - A short clinical rationale based on findings from Orthotica Labs website
 - DO NOT include materials, posting, or modifications
-
-### AFO Trigger Rule
-- For patients age 65+ with fall risk, weakness, or history of falls, recommend **Moore Balance Brace**
-- Do not recommend foot orthotics unless AFO is clearly inappropriate
 
 Use Markdown with headings (##), **bold** styles, and bullet points. Only recommend Orthotica Labs products.
 
