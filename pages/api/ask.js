@@ -51,7 +51,7 @@ Speak with confidence to clinicians. Be concise. If a case is vague, ask clarify
 
 ### Foot Orthotic Recommendations
 Include:
-- **Device Style**
+- **Device Style** (e.g., Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Formal Fit, Fashionista Fit, Accommodative Ultra, Stability Ultra, Pediatric Ultra, EP Hybrid, EVA Trilaminate)
 - **Shell Material and Stiffness**
 - **Posting (rearfoot/forefoot)**
 - **Additions and Modifications**
