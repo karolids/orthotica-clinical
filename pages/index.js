@@ -71,12 +71,36 @@ export default function Home() {
         </div>
 
         {response && (
-          <div
-            className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
-            dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
-          />
+          <>
+            <div
+              id="response-container"
+              className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
+              dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
+            />
+            <button
+              onClick={exportToPDF}
+              className="mt-4 bg-orthoticaGray text-white font-semibold px-4 py-2 rounded hover:bg-gray-600 transition"
+            >
+              Download as PDF
+            </button>
+          </>
         )}
       </div>
     </div>
   );
 }
+
+const exportToPDF = () => {
+  const element = document.getElementById('response-container');
+  if (!element) return;
+
+  const opt = {
+    margin: 0.5,
+    filename: 'Orthotica_Clinical_Summary.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+};
