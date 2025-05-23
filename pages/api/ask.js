@@ -62,7 +62,7 @@ Use the following format:
 (if provided, summarize briefly)
 
 ## Recommended Orthotic or AFO
-- **Device Style:** [Orthotica model name]
+- **Device Style:** (e.g., Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Fashionista Fit, Formal Fit, Pediatric Ultra, Stability Ultra, Accommodative Ultra)
 - **Shell Material and Stiffness:**
 - **Rearfoot/Forefoot Posting:** (include degrees + reasoning if applicable)
 - **Additions/Modifications:** (e.g., met pad, heel lift, Morton’s extension)
