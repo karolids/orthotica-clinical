@@ -30,15 +30,17 @@ export default async function handler(req, res) {
       if (matchedMods.length) {
         rulesSummary = `\n\n## Modifications Based on Clinical Rules\n${matchedMods.join("\n\n")}`;
       }
-    } catch (err) {
-      console.warn("Could not load clinical rules:", err.message);
-    }
 
-    const updatedMessages = [
-      {
-        role: "system",
-        content: `
-You are Orthotica AI, a clinical advisor for Orthotica Labs.
+      // Format the clinical case block
+      const clinicalCaseHeader = `## Clinical Case\n${lastUserMsg}\n\n`;
+
+      // Filter out previous user messages for safety
+      const assistantHistory = messages.filter(m => m.role !== 'user');
+
+      const updatedMessages = [
+        {
+          role: "system",
+          content: `You are Orthotica AI, a clinical advisor for Orthotica Labs.
 
 You specialize in recommending Orthotica Labs custom foot orthotics and custom AFOs only. Never suggest generic or off-the-shelf devices.
 
@@ -65,34 +67,40 @@ Include:
 - Do not recommend foot orthotics unless AFO is clearly inappropriate
 
 Use Markdown with headings (##), **bold** styles, and bullet points. Only recommend Orthotica Labs products.
-\n${rulesSummary}`
-      },
-      {'role': 'user', 'content': 'Patient is 82 with peripheral neuropathy and balance issues, history of two falls.'},
-      {'role': 'assistant', 'content': '## Recommended AFO\n\n- **Device Style:** Moore Balance Brace\n\n## Rationale\nThe Moore Balance Brace is appropriate for this patient due to advanced age, history of falls, and gait instability. It provides medial-lateral support and improved proprioception to help reduce future fall risk.'},
-      ...messages
-    ];
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        messages: updatedMessages,
-        temperature: 0.5
-      })
-    });
+${rulesSummary}`
+        },
+        {
+          role: "user",
+          content: clinicalCaseHeader + lastUserMsg
+        },
+        ...assistantHistory
+      ];
 
-    const data = await response.json();
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4o",
+          messages: updatedMessages,
+          temperature: 0.5
+        })
+      });
 
-    if (!response.ok) {
-      return res.status(500).json({ error: "OpenAI API error", detail: data });
+      const data = await response.json();
+
+      if (!response.ok) {
+        return res.status(500).json({ error: "OpenAI API error", detail: data });
+      }
+
+      res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error", detail: err.toString() });
     }
-
-    res.status(200).json({ answer: data.choices?.[0]?.message?.content || "No response from AI." });
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error", detail: err.toString() });
+  } catch (outerErr) {
+    res.status(500).json({ error: "Fatal error", detail: outerErr.toString() });
   }
 }
