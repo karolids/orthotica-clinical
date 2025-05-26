@@ -61,7 +61,7 @@ export default function Home() {
           </div>
           <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi, I'm Francis!</h1>
           <p className="text-lg text-orthoticaGray">I'm your Orthotica Clinical Advisor</p>
-          <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
+          <p className="text-orthoticaGray">Describe your patient’s condition, and I’ll recommend orthotic or AFO modifications.</p>
         </header>
 
         <div className="bg-gray-100 p-4 rounded-xl border border-orthoticaGray">
@@ -102,8 +102,17 @@ export default function Home() {
             }}
           >
             <div dangerouslySetInnerHTML={{ __html: marked.parse(response) }} />
-            <div style={{ textAlign: 'center', marginTop: '40px' }}>
-              <img src="/orthotica-logo.png" alt="Orthotica Labs" style={{ height: '60px' }} />
+            <div style={{ marginTop: '40px' }}>
+  <img
+    src="/orthotica-logo.png"
+    alt="Orthotica Labs"
+    style={{
+      height: '60px',
+      display: 'block',
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    }}
+  />
             </div>
           </div>
         )}
