@@ -131,7 +131,7 @@ ${rulesSummary}`
 
     const aiAnswer = data.choices?.[0]?.message?.content || "No response from AI.";
     const finalAnswer = `## Clinical Scenario\n${lastUserMsg}\n\n${aiAnswer}`;
-    res.status(200).json({ answer: aiAnswer });
+    res.status(200).json({ answer: finalAnswer });
   } catch (err) {
     res.status(500).json({ error: "Internal server error", detail: err.toString() });
   }
