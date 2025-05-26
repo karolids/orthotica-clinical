@@ -12,7 +12,6 @@ export default async function handler(req, res) {
     const rulesPath = path.join(process.cwd(), "public", "clinical_rules.json");
     let rulesSummary = '';
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
-    const clinicalCaseHeader = `## Clinical Scenario\n${lastUserMsg}\n\n`;
 
     let clinicalRules = {};
     try {
@@ -52,102 +51,29 @@ Patient has plantar fasciitis and heel pain
 **Shell Material:** Moderate flex graphite  
 **Topcover:** Full-length EVA
 
-**Rationale:** Offloads the plantar fascia and cushions impact at the heel.` },
+**Why this works:** Supports the arch and cushions the heel to relieve fascia tension.`
+      },
       {
         role: "user",
-        content: "Patient has hallux rigidus and limited dorsiflexion."
+        content: "85 year old woman with frequent falls and shuffling gait."
       },
       {
         role: "assistant",
         content: `## Clinical Scenario
-Patient has hallux rigidus and limited dorsiflexion
-
-## Orthotic Recommendation
-**Device Style:** Core Fit  
-**Posting:** Medial forefoot post  
-**Additions:** Morton’s extension  
-**Shell Material:** Semi-rigid polypropylene  
-**Topcover:** Neoprene
-
-**Rationale:** Limits hallux motion and provides forefoot stability.` },
-      {
-        role: "user",
-        content: "Patient has diabetes and peripheral neuropathy."
-      },
-      {
-        role: "assistant",
-        content: `## Clinical Scenario
-Patient has diabetes and peripheral neuropathy
-
-## Orthotic Recommendation
-**Device Style:** Accommodative Ultra  
-**Posting:** None  
-**Additions:** 1/8" Poron forefoot pad  
-**Shell Material:** EVA Trilaminate  
-**Topcover:** Soft vinyl
-
-**Rationale:** Provides shock absorption and reduces pressure points.` },
-      {
-        role: "user",
-        content: "85 year old female with history of falls."
-      },
-      {
-        role: "assistant",
-        content: `## Clinical Scenario
-85 year old female with history of falls
+85 year old woman with frequent falls and shuffling gait
 
 ## AFO Recommendation
 **Device Style:** Moore Balance Brace
 
-**Rationale:** Stabilizes ankle, improves balance, and reduces fall risk in geriatric patients.` },
-      {
-        role: "user",
-        content: "11 year old with severe pronation and flexible flat feet."
-      },
-      {
-        role: "assistant",
-        content: `## Clinical Scenario
-11 year old with severe pronation and flexible flat feet
-
-## AFO Recommendation
-**Device Style:** SMOky
-
-**Rationale:** Controls subtalar motion and supports pediatric arch development.` },
-      {
-        role: "user",
-        content: "Patient has drop foot post-stroke and ambulates slowly."
-      },
-      {
-        role: "assistant",
-        content: `## Clinical Scenario
-Patient has drop foot post-stroke and ambulates slowly
-
-## AFO Recommendation
-**Device Style:** Orthotica Brace Articulated
-
-**Rationale:** Provides dorsiflexion assist and stabilizes ankle during swing phase.` },
-      {
-        role: "user",
-        content: "Patient has pes cavus and lateral column pain."
-      },
-      {
-        role: "assistant",
-        content: `## Clinical Scenario
-Patient has pes cavus and lateral column pain
-
-## Orthotic Recommendation
-**Device Style:** Stability Ultra  
-**Posting:** Lateral wedge  
-**Additions:** Wide heel cup, Poron under 5th MT  
-**Shell Material:** Reinforced graphite  
-**Topcover:** EVA
-
-**Rationale:** Redistributes lateral forefoot pressure and stabilizes high arch.` }
+**Why this works:** Enhances proprioception and ankle stability to reduce fall risk.`
+      }
     ];
 
     const systemPrompt = {
       role: "system",
       content: `You are Orthotica AI, a clinical advisor for Orthotica Labs.
+
+Speak to the user like a colleague—concise, confident, and supportive. Avoid repeating the clinical question unless it improves clarity.
 
 Only recommend **custom foot orthotics or AFOs made by Orthotica Labs**. Never suggest over-the-counter products.
 
@@ -155,29 +81,24 @@ Only recommend **custom foot orthotics or AFOs made by Orthotica Labs**. Never s
 
 ## Orthotic Guidance
 Always include:
-- **Device Style** (e.g., Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Formal Fit, Fashionista Fit, Accommodative Ultra, Stability Ultra, Pediatric Ultra, EP Hybrid, EVA Trilaminate)
+- **Device Style** (e.g., Athletica Sport, Core Fit, Fashionista Fit, Stability Ultra, Pediatric Ultra, etc.)
 - **Shell Material and Stiffness**
 - **Rearfoot and Forefoot Posting**
 - **Additions and Modifications**
-- **Topcover or Midlayer Options** (e.g., EVA, Zfoam, Neoprene, Vinyl)
-- A short clinical rationale
+- **Topcover or Midlayer Options** (EVA, Zfoam, Neoprene, Vinyl)
+- A brief rationale labeled **Why this works**
 
 ---
 
 ## AFO Guidance
 Only include:
-- **Device Style** (e.g., Orthotica Brace, Orthotica Brace Articulated, Moore Balance Brace, Dynamic Split Upright - Independent, Dynamic Split Upright - Unibody, SMOky)
-- A short clinical rationale
-Do NOT include materials, posting, or customizations
+- **Device Style** (Orthotica Brace, Articulated, Moore Balance Brace, Dynamic Uprights, SMOky)
+- A short rationale labeled **Why this works**
+Do NOT include materials, posting, or trim details
 
 ---
 
-Use Markdown. Start every answer with:
-
-## Clinical Scenario
-[repeat user's case]
-
-Then structure your recommendation clearly with headings and bullets.
+Use Markdown. Use headings and bullet points for clarity.
 
 ${rulesSummary}`
     };
@@ -185,7 +106,7 @@ ${rulesSummary}`
     const updatedMessages = [
       systemPrompt,
       ...fewShotExamples,
-      { role: "user", content: clinicalCaseHeader + lastUserMsg },
+      { role: "user", content: lastUserMsg },
       ...assistantHistory
     ];
 
@@ -198,7 +119,7 @@ ${rulesSummary}`
       body: JSON.stringify({
         model: "gpt-4o",
         messages: updatedMessages,
-        temperature: 0.35
+        temperature: 0.4
       })
     });
 
@@ -210,8 +131,7 @@ ${rulesSummary}`
     }
 
     const aiAnswer = data.choices?.[0]?.message?.content || "No response from AI.";
-    const finalAnswer = `## Clinical Scenario\n${lastUserMsg}\n\n${aiAnswer}`;
-    res.status(200).json({ answer: finalAnswer });
+    res.status(200).json({ answer: aiAnswer });
   } catch (err) {
     res.status(500).json({ error: "Internal server error", detail: err.toString() });
   }
