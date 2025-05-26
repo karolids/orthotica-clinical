@@ -75,7 +75,8 @@ export default function Home() {
           />
           <button
             onClick={handleSubmit}
-            className="mt-4 min-w-[300px] bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-400 transition text-center"
+            className="mt-4 min-w-[300px] bg-orthoticaPink text-white font-semibold px-6 py-3 rounded-lg hover:bg-orthoticaPink/90 transition text-center"
+  disabled={loading}
             disabled={loading}
           >
             {loading ? (
