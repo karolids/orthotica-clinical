@@ -100,10 +100,10 @@ export default function Home() {
               pageBreakAfter: 'auto'
             }}
           >
-            <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <div dangerouslySetInnerHTML={{ __html: marked.parse(response) }} />
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
               <img src="/orthotica-logo.png" alt="Orthotica Labs" style={{ height: '60px' }} />
             </div>
-            <div dangerouslySetInnerHTML={{ __html: marked.parse(response) }} />
           </div>
         )}
 
