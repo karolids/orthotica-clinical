@@ -60,7 +60,7 @@ export default function Home() {
             <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-24 mb-4" />
           </div>
           <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi, I'm Francis!</h1>
-          <p className="text-lg text-orthoticaGray">I'm Your Orthotica Clinical Advisor</p>
+          <p className="text-lg text-orthoticaGray">I'm your Orthotica Clinical Advisor</p>
           <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
@@ -95,7 +95,15 @@ export default function Home() {
             />
             <div
               id="pdf-container"
-              style={{ display: 'none', fontFamily: 'Arial', lineHeight: '1.6', padding: '24px' }}
+              style={{
+                position: 'absolute',
+                left: '-9999px',
+                top: '0',
+                fontFamily: 'Arial',
+                lineHeight: '1.6',
+                padding: '24px',
+                width: '800px'
+              }}
               dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
             />
             <button
