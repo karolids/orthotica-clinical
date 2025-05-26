@@ -87,19 +87,21 @@ export default function Home() {
         </div>
 
         {response && (
-          <>
-            <div
-              id="response-container"
-              className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
-              dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
-            />
-            <button
-              onClick={exportToPDF}
-              className="mt-4 bg-orthoticaGray text-white font-semibold px-4 py-2 rounded hover:bg-gray-600 transition"
-            >
-              Download as PDF
-            </button>
-          </>
+          <div
+            id="response-container"
+            className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
+            style={{ fontFamily: 'Arial', lineHeight: '1.6', width: '100%' }}
+            dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
+          />
+        )}
+
+        {response && (
+          <button
+            onClick={exportToPDF}
+            className="mt-4 bg-orthoticaGray text-white font-semibold px-4 py-2 rounded hover:bg-gray-600 transition"
+          >
+            Download as PDF
+          </button>
         )}
       </div>
     </div>
