@@ -108,7 +108,7 @@ export default function Home() {
     src="/orthotica-logo.png"
     alt="Orthotica Labs"
     style={{
-      height: '60px',
+      height: '45px',
       display: 'block',
       marginLeft: 'auto',
       marginRight: 'auto'
