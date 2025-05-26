@@ -54,12 +54,17 @@ Pathology": {
       "Heel cup to 5/8\" depth",
       "Poron plug in central heel",
       "0\u00b0 rearfoot post"
+    ],
+     "neuroma": [
+      "3/16\" metatarsal pad",
+      "Place 6mm distal to shell edge",
+      "Use poron or EVA padding"
     ]
   },
   "AFO_Indications": {
     "foot drop": [
       "Recommend: Orthotica Brace Articulated",
-      "AFO with dorsiflexion assist and lateral support"
+      "Dorsi-assist tamarach joint with dorsiflexion assist and lateral support"
     ],
     "balance issues in elderly": [
       "Recommend: Moore Balance Brace",
