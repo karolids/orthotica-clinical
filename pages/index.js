@@ -45,7 +45,7 @@ export default function Home() {
       margin: 0.5,
       filename: 'Orthotica_Clinical_Summary.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
+      html2canvas: { scale: 1.5, scrollY: 0 },
       jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
     };
 
@@ -90,7 +90,15 @@ export default function Home() {
           <div
             id="response-container"
             className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
-            style={{ fontFamily: 'Arial', lineHeight: '1.6', width: '100%' }}
+            style={{
+              fontFamily: 'Arial',
+              lineHeight: '1.6',
+              width: '100%',
+              overflowWrap: 'break-word',
+              pageBreakInside: 'avoid',
+              pageBreakBefore: 'auto',
+              pageBreakAfter: 'auto'
+            }}
             dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
           />
         )}
