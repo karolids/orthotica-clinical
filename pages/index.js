@@ -38,7 +38,7 @@ export default function Home() {
   };
 
   const exportToPDF = () => {
-    const element = document.getElementById('pdf-container');
+    const element = document.getElementById('response-container');
     if (!element) return;
 
     const opt = {
@@ -91,19 +91,6 @@ export default function Home() {
             <div
               id="response-container"
               className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
-              dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
-            />
-            <div
-              id="pdf-container"
-              style={{
-                position: 'absolute',
-                left: '-9999px',
-                top: '0',
-                fontFamily: 'Arial',
-                lineHeight: '1.6',
-                padding: '24px',
-                width: '800px'
-              }}
               dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
             />
             <button
