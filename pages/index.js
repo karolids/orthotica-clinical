@@ -93,7 +93,7 @@ export default function Home() {
             className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
             style={{
               fontFamily: 'Arial',
-              fontSize: '13px',
+              fontSize: '16px',
               lineHeight: '1.4',
               width: '100%',
               overflowWrap: 'break-word',
