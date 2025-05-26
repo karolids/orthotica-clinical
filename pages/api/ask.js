@@ -115,7 +115,7 @@ ${rulesSummary}`
       body: JSON.stringify({
         model: "gpt-4o",
         messages: updatedMessages,
-        temperature: 0.4
+        temperature: 0.5
       })
     });
 
