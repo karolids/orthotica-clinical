@@ -41,7 +41,10 @@ export default async function handler(req, res) {
       },
       {
         role: "assistant",
-        content: `## Orthotic Recommendation
+        content: `## Clinical Scenario
+Patient has plantar fasciitis and heel pain
+      
+##Orthotic Recommendation
 **Device Style:** Athletica Sport Flex  
 **Shell Material:** Ploypropylene – moderate flex  
 **Posting:** 3° rearfoot varus post  
@@ -79,15 +82,15 @@ Include:
 - **Topcover or Midlayer Material**
 - **Clinical Rationale**: Explain how each element benefits the pathology. Be specific.
 
-Device Styles may include: Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Fashionista Fit, Formal Fit, Accommodative Ultra, Pediatric Ultra, Stability Ultra, EP Hybrid, EVA Trilaminate
+Device Styles include: Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Fashionista Fit, Formal Fit, Accommodative Ultra, Pediatric Ultra, Stability Ultra, EP Hybrid, EVA Trilaminate
 
-Materials may include: Polypropylen Shell or Graphite Shell (flex/flexible/stiff), Top Cover Material (Vinyl, Vegan Leather, EVA35, Neoprene), Midlayer Material (O-Foam, Z-Foam, EVA25) 
+Materials include: Polypropylen Shell or Graphite Shell (flex/flexible/stiff), Top Cover Material (Vinyl, Vegan Leather, EVA35, Neoprene), Midlayer Material (O-Foam, Z-Foam, EVA25) 
 
 ---
 
 ## AFO Recommendations
 Include:
-- **Device Style** (Orthotica Brace, Articulated, Moore Balance Brace, SMOky, Dynamic Upright Independent or Unibody)
+- **Device Style** (e.g., Orthotica Brace, Articulated, Moore Balance Brace, SMOky, Dynamic Upright Independent or Unibody)
 - **Clinical Rationale**: Explain clearly how the brace supports gait, stability, or ankle motion.
 
 Mention appropriate footwear pairing if relevant for AFOs.
@@ -127,6 +130,7 @@ ${rulesSummary}`
     }
 
     const aiAnswer = data.choices?.[0]?.message?.content || "No response from AI.";
+    const finalAnswer = `## Clinical Scenario\n${lastUserMsg}\n\n${aiAnswer}`;
     res.status(200).json({ answer: aiAnswer });
   } catch (err) {
     res.status(500).json({ error: "Internal server error", detail: err.toString() });
