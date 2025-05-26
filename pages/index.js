@@ -37,6 +37,21 @@ export default function Home() {
     setLoading(false);
   };
 
+  const exportToPDF = () => {
+    const element = document.getElementById('pdf-container');
+    if (!element) return;
+
+    const opt = {
+      margin: 0.5,
+      filename: 'Orthotica_Clinical_Summary.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  };
+
   return (
     <div className="min-h-screen bg-white text-orthoticaBlack font-sans px-6 py-8">
       <div className="w-full max-w-5xl mx-auto space-y-8">
@@ -44,12 +59,8 @@ export default function Home() {
           <div className="flex justify-center">
             <img src="/orthotica-logo.png" alt="Orthotica Labs" className="h-24 mb-4" />
           </div>
-          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">
-  Hi, I'm Francis!
-</h1>
-<p className="text-lg text-orthoticaGray">
-  I'm your Orthotica Clinical Advisor
-</p>
+          <h1 className="text-2xl font-bold uppercase text-orthoticaGray">Hi, I'm Francis!</h1>
+          <p className="text-lg text-orthoticaGray">I'm your Orthotica Clinical Advisor</p>
           <p className="text-orthoticaGray">Describe your patient’s condition, and we’ll recommend orthotic or AFO modifications.</p>
         </header>
 
@@ -82,6 +93,11 @@ export default function Home() {
               className="prose prose-lg bg-white border border-orthoticaPink p-6 rounded-xl shadow-sm"
               dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
             />
+            <div
+              id="pdf-container"
+              style={{ display: 'none', fontFamily: 'Arial', lineHeight: '1.6', padding: '24px' }}
+              dangerouslySetInnerHTML={{ __html: marked.parse(response) }}
+            />
             <button
               onClick={exportToPDF}
               className="mt-4 bg-orthoticaGray text-white font-semibold px-4 py-2 rounded hover:bg-gray-600 transition"
@@ -94,18 +110,3 @@ export default function Home() {
     </div>
   );
 }
-
-const exportToPDF = () => {
-  const element = document.getElementById('response-container');
-  if (!element) return;
-
-  const opt = {
-    margin: 0.5,
-    filename: 'Orthotica_Clinical_Summary.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(element).save();
-};
