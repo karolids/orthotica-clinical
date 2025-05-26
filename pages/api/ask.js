@@ -104,7 +104,7 @@ ${rulesSummary}`
     }
 
     const aiAnswer = data.choices?.[0]?.message?.content || "No response from AI.";
-    const finalAnswer = `## Scenario\n${lastUserMsg}\n\n${aiAnswer}`;
+    const finalAnswer = `## Clinical Scenario\n${lastUserMsg}\n\n${aiAnswer}`;
     res.status(200).json({ answer: finalAnswer });
 
   } catch (err) {
