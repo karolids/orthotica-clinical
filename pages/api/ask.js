@@ -12,19 +12,24 @@ export default async function handler(req, res) {
     const rulesPath = path.join(process.cwd(), "public", "clinical_rules.json");
     let rulesSummary = '';
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
-
+    const matchedMods = [];
     let clinicalRules = {};
+    let isAFO = false;
+
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
       clinicalRules = JSON.parse(rulesData);
-      const matchedMods = [];
+
       for (const category of Object.keys(clinicalRules)) {
         for (const finding of Object.keys(clinicalRules[category])) {
           if (lastUserMsg.toLowerCase().includes(finding.toLowerCase())) {
-            matchedMods.push(`**Finding:** ${finding} (Category: ${category})\n- ${clinicalRules[category][finding].join("\n- ")}`);
+            const modText = `**Finding:** ${finding} (Category: ${category})\n- ${clinicalRules[category][finding].join("\n- ")}`;
+            matchedMods.push(modText);
+            if (category === "AFO_Indications") isAFO = true;
           }
         }
       }
+
       if (matchedMods.length) {
         rulesSummary = `\n\n## Modifications Based on Clinical Rules\n${matchedMods.join("\n\n")}`;
       }
@@ -66,9 +71,27 @@ Patient has plantar fasciitis and heel pain
       }
     ];
 
-    const systemPrompt = {
-      role: "system",
-      content: `You are Orthotica AI, a clinical advisor working with foot specialists and orthotists.
+    const basePrompt = isAFO
+      ? {
+          role: "system",
+          content: `You are Orthotica AI. Only recommend AFOs produced by Orthotica Labs.
+
+## AFO Recommendation Format
+- **Device Style**: One of [Orthotica Brace, Articulated, Moore Balance Brace, SMOky, Dynamic Upright Independent or Unibody]
+- **Clinical Rationale**: One paragraph only
+
+DO NOT mention materials, posting, shell shape, or footwear unless asked.
+
+Use Markdown with:
+- ## headings
+- **bold** device names
+- no additional recommendations outside AFOs
+
+${rulesSummary}`
+        }
+      : {
+          role: "system",
+          content: `You are Orthotica AI, a clinical advisor working with foot specialists and orthotists.
 
 Speak in a professional, conversational tone — like you're consulting with a trusted colleague. Be warm but concise.
 
@@ -105,10 +128,10 @@ DO NOT include:
 Use Markdown formatting with clear headings and bullet points.
 
 ${rulesSummary}`
-    };
+        };
 
     const updatedMessages = [
-      systemPrompt,
+      basePrompt,
       ...fewShotExamples,
       { role: "user", content: lastUserMsg },
       ...assistantHistory
