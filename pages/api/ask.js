@@ -43,7 +43,7 @@ export default async function handler(req, res) {
         role: "assistant",
         content: `## Clinical Scenario
 Patient has plantar fasciitis and heel pain
-      
+
 ##Orthotic Recommendation
 **Device Style:** Athletica Sport Flex  
 **Shell Material:** Ploypropylene – moderate flex  
@@ -62,7 +62,8 @@ Patient has plantar fasciitis and heel pain
         content: `## AFO Recommendation
 **Device Style:** Moore Balance Brace
 
-**Clinical Rationale:** Ideal for fall-risk patients over 65. This brace supports both medial and lateral ankle motion while enhancing proprioception. Its low-profile design fits easily into orthopedic shoes, encouraging compliance and stability in gait.` }
+**Clinical Rationale:** Ideal for fall-risk patients over 65. This brace supports both medial and lateral ankle motion while enhancing proprioception. Its low-profile design fits easily into orthopedic shoes, encouraging compliance and stability in gait.`
+      }
     ];
 
     const systemPrompt = {
@@ -84,7 +85,7 @@ Include:
 
 Device Styles include: Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Fashionista Fit, Formal Fit, Accommodative Ultra, Pediatric Ultra, Stability Ultra, EP Hybrid, EVA Trilaminate
 
-Materials include: Polypropylen Shell or Graphite Shell (flex/flexible/stiff), Top Cover Material (Vinyl, Vegan Leather, EVA35, Neoprene), Midlayer Material (O-Foam, Z-Foam, EVA25) 
+Materials include: Polypropylen Shell or Graphite Shell (flex/flexible/stiff), Top Cover Material (Vinyl, Vegan Leather, EVA35, Neoprene), Midlayer Material (O-Foam, Z-Foam, EVA25)
 
 ---
 
@@ -93,7 +94,11 @@ Include:
 - **Device Style** (e.g., Orthotica Brace, Articulated, Moore Balance Brace, SMOky, Dynamic Upright Independent or Unibody)
 - **Clinical Rationale**: Explain clearly how the brace supports gait, stability, or ankle motion.
 
-Mention appropriate footwear pairing if relevant for AFOs.
+DO NOT include:
+- Material selection
+- Posting
+- Footwear recommendations (unless asked)
+- Any non-Orthotica product
 
 ---
 
