@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
     const matchedMods = [];
     let clinicalRules = {};
-    let deviceType = ''; // "AFO" or "Orthotic"
+    let deviceType = '';
 
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
@@ -54,23 +54,45 @@ export default async function handler(req, res) {
 
 You ONLY recommend Orthotica Labs custom orthotics and AFOs.
 
-DEVICE NAMES YOU MUST USE:
-- **Orthotics**: Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Fashionista Fit, Formal Fit, Accommodative Ultra, Pediatric Ultra, Stability Ultra, EP Hybrid, EVA Trilaminate
-- **AFOs**: Orthotica Brace, Orthotica Brace Articulated, Moore Balance Brace, Dynamic Upright Independent, Dynamic Upright Unibody, SMOky, Custom CROW Walker AFO
+Use only these orthotic styles:
+- Athletica Sport
+- Athletica Sport Flex
+- Athletica Runner
+- Core Fit
+- Fashionista Fit
+- Formal Fit
+- Accommodative Ultra
+- Pediatric Ultra
+- Stability Ultra
+- EP Hybrid
+- EVA Trilaminate
 
-RESPONSE FORMAT:
+Use only these AFO styles:
+- Orthotica Brace
+- Orthotica Brace Articulated
+- Moore Balance Brace
+- Dynamic Upright Independent
+- Dynamic Upright Unibody
+- SMOky
+- Custom CROW Walker AFO
+
+Use this exact response format:
 ## Clinical Scenario
-[Summarize user input clearly and clinically.]
+Summarize the patient's condition and clinical concern.
 
-## [Orthotic or AFO] Recommendation
-**Device Style:** [Select from above only]
+## Orthotic Recommendation
+**Device Style:** [Select Orthotica Labs orthotic]  
+**Posting:** [Rearfoot and/or forefoot posting, angles]  
+**Shell Modifications:** [Shell stiffness, flanges, skives]  
+**Covers:** [Topcover and midlayer materials]  
+**Padding/Accommodation:** [Poron, plugs, met pads, heel cushions]
+
+## AFO Recommendation
+**Device Style:** [Select AFO name]  
+(Skip posting, padding, covers unless user asks)
 
 ## Clinical Rationale
-[One short paragraph. Do not mention materials unless essential.]
-
-- Do NOT include footwear unless asked.
-- Do NOT include Modifications Based on Clinical Rules for AFOs.
-- Use Markdown headings, bullet points, and structure.
+Explain why this device meets clinical and biomechanical needs.
 
 ${summariesText}${rulesSummary}`
     };
