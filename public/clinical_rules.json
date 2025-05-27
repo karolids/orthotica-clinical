@@ -1,4 +1,5 @@
-Pathology": {
+{
+  "Pathology": {
     "plantar fasciitis": [
       "Deep heel seat to 5/8\"",
       "3\u00b0 rearfoot varus post",
@@ -26,7 +27,7 @@ Pathology": {
     ],
     "pes cavus": [
       "Add lateral wedge",
-      "Wide heel cup",
+      "Deep heel cup",
       "Cushioning under 5th metatarsal"
     ],
     "flat feet": [
@@ -41,7 +42,7 @@ Pathology": {
       "Rigid arch support"
     ],
     "diabetic neuropathy": [
-      "Accommodative EVA shell",
+      "EVA Trilaminate",
       "No posting",
       "Full-length topcover",
       "Add poron padding under metatarsal heads and heel"
@@ -55,16 +56,36 @@ Pathology": {
       "Poron plug in central heel",
       "0\u00b0 rearfoot post"
     ],
-     "neuroma": [
-      "3/16\" metatarsal pad",
-      "Place 6mm distal to shell edge",
-      "Use poron or EVA padding"
+    "hallux valgus": [
+      "Medial flange to support 1st MTP",
+      "Add toe separator",
+      "Use flexible topcover to reduce dorsal irritation"
+    ],
+    "tarsal tunnel syndrome": [
+      "Medial heel skive to reduce pronation",
+      "Deep heel cup",
+      "Soft topcover to reduce pressure"
+    ],
+    "osteoarthritis of the ankle": [
+      "Shock-absorbing topcover",
+      "Mild rearfoot post",
+      "Full-length EVA shell to reduce impact"
+    ],
+    "rheumatoid arthritis": [
+      "Accommodative Ultra orthotic with offloading",
+      "Poron plugs under sensitive joints",
+      "Wide shell with minimal arch pressure"
+    ],
+    "calcaneal apophysitis": [
+      "Deep heel cup",
+      "EVA heel lift",
+      "Full-length EVA topcover"
     ]
   },
   "AFO_Indications": {
     "foot drop": [
       "Recommend: Orthotica Brace Articulated",
-      "Dorsi-assist tamarach joint with dorsiflexion assist and lateral support"
+      "Dorsi-assist tamarack joint with dorsiflexion assist and lateral support"
     ],
     "balance issues in elderly": [
       "Recommend: Moore Balance Brace",
@@ -81,6 +102,26 @@ Pathology": {
     "charcot foot": [
       "Recommend: Custom CROW Walker AFO",
       "Total contact design for offloading and stability"
+    ],
+    "ankle instability": [
+      "Recommend: Dynamic Upright Unibody AFO",
+      "Controls inversion/eversion while allowing sagittal plane motion"
+    ],
+    "charcot foot (advanced)": [
+      "Recommend: Orthotica CROW Walker AFO",
+      "Fully immobilizes foot and ankle to prevent collapse"
+    ],
+    "rheumatoid arthritis with ankle deformity": [
+      "Recommend: Orthotica Brace",
+      "Supports unstable or inflamed joints, limits painful motion"
+    ],
+    "severe flatfoot": [
+      "Recommend: Orthotica Brace Articulated",
+      "Controls midfoot collapse and supports rearfoot"
+    ],
+    "ankle arthritis with instability": [
+      "Recommend: Moore Balance Brace",
+      "Improves proprioception and provides mild medial-lateral control"
     ]
   }
 }
