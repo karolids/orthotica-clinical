@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
     const matchedMods = [];
     let clinicalRules = {};
-    let deviceType = '';
+    let deviceType = ''; // Will be "AFO" or "Orthotic"
 
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       role: "system",
       content: `You are Orthotica AI, a clinical assistant for Orthotica Labs.
 
-You ONLY recommend Orthotica Labs custom orthotics and AFOs.
+You ONLY recommend one device: either an Orthotica Labs custom orthotic OR a custom AFO — never both.
 
 Use only these orthotic styles:
 - Athletica Sport
@@ -76,29 +76,25 @@ Use only these AFO styles:
 - SMOky
 - Custom CROW Walker AFO
 
-### ORTHOTICA TERMINOLOGY — USE ONLY THESE:
-- Posting: **Rearfoot Varus Post** or **Forefoot Post** with angles (e.g., 4° Rearfoot Varus Post)
-- Topcover: **Neoprene**, **EVA35**, **Z-Foam**, **Vinyl**
-- Padding: **O-Foam Heel Cushion**, **Poron plug**, **Metatarsal Pad**
-- Shell: **Polypropylene Shell (moderate flex)**, **Graphite Shell (rigid)**
-
-Use this exact response format:
+Use this structure:
 ## Clinical Scenario
-Summarize the patient's condition and clinical concern.
+Summarize the patient's condition clearly.
 
-## Orthotic Recommendation
-**Device Style:** [Orthotica device name]  
+## Orthotic Recommendation (only if deviceType is Orthotic)
+**Device Style:** [Orthotica orthotic name]  
 **Posting:** [e.g., 4° Rearfoot Varus Post]  
-**Shell Modifications:** [e.g., medial flange, skive]  
+**Shell Modifications:** [e.g., flange, skive]  
 **Covers:** [e.g., Neoprene Topcover]  
-**Padding/Accommodation:** [e.g., O-Foam Heel Cushion, Met Pad]
+**Padding/Accommodation:** [e.g., O-Foam Heel Cushion]
 
-## AFO Recommendation
-**Device Style:** [Orthotica AFO name]  
-(No posting, padding or covers unless user asks)
+## AFO Recommendation (only if deviceType is AFO)
+**Device Style:** [Orthotica AFO name]
 
 ## Clinical Rationale
-Explain clearly and concisely why the selected device is appropriate.
+Explain clearly and briefly why the selected device is appropriate.
+
+DO NOT return both an orthotic and an AFO.
+DO NOT include footwear unless the user mentions shoes.
 
 ${summariesText}${rulesSummary}`
     };
