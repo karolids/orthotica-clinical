@@ -10,26 +10,24 @@ export default async function handler(req, res) {
     }
 
     const rulesPath = path.join(process.cwd(), "public", "clinical_rules.json");
+    const summariesPath = path.join(process.cwd(), "public", "foot_conditions_summary.md");
+
     let rulesSummary = '';
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
     const matchedMods = [];
     let clinicalRules = {};
-    let isAFO = false;
 
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
       clinicalRules = JSON.parse(rulesData);
-
       for (const category of Object.keys(clinicalRules)) {
         for (const finding of Object.keys(clinicalRules[category])) {
           if (lastUserMsg.toLowerCase().includes(finding.toLowerCase())) {
             const modText = `**Finding:** ${finding} (Category: ${category})\n- ${clinicalRules[category][finding].join("\n- ")}`;
             matchedMods.push(modText);
-            if (category === "AFO_Indications") isAFO = true;
           }
         }
       }
-
       if (matchedMods.length) {
         rulesSummary = `\n\n## Modifications Based on Clinical Rules\n${matchedMods.join("\n\n")}`;
       }
@@ -37,102 +35,184 @@ export default async function handler(req, res) {
       console.warn("⚠️ Skipping clinical rules — file not found or invalid.");
     }
 
+    let summariesText = '';
+    try {
+      summariesText = fs.readFileSync(summariesPath, "utf-8");
+    } catch (e) {
+      summariesText = `**Plantar Fasciitis**
+Inflammation of the plantar fascia causing heel pain, especially in the morning or after periods of rest.
+
+**Neuroma**
+A painful condition, often between the 3rd and 4th toes, caused by thickened nerve tissue (Morton’s neuroma).
+
+**Achilles Tendinitis**
+Overuse injury of the Achilles tendon leading to posterior heel pain and swelling.
+
+**Hallux Rigidus**
+Arthritic stiffening of the big toe joint (1st MTP), limiting dorsiflexion and causing pain during toe-off.
+
+**Metatarsalgia**
+Forefoot pain centered around the metatarsal heads, usually caused by overload or dropped metatarsal arch.
+
+**Pes Cavus**
+High-arched foot deformity that creates lateral column pain and instability during gait.
+
+**Flat Feet**
+Loss of medial arch leading to overpronation, fatigue, and possible progression to tendon dysfunction.
+
+**Posterior Tibial Tendon Dysfunction**
+Progressive collapse of the arch due to posterior tibial tendon weakness, often causing medial pain and flatfoot.
+
+**Diabetic Neuropathy**
+Loss of protective sensation in the foot due to diabetes, increasing risk of ulceration and injury.
+
+**Limb Length Discrepancy**
+One leg is shorter than the other, often causing pelvic tilt, gait asymmetry, or low back pain.
+
+**Heel Spur**
+Bony outgrowth at the calcaneus often associated with plantar fasciitis and heel pain.
+
+**Hallux Valgus**
+Deformity of the 1st MTP joint with lateral deviation of the big toe and a prominent medial bunion.
+
+**Tarsal Tunnel Syndrome**
+Compression of the tibial nerve in the tarsal tunnel causing burning, tingling, or numbness in the foot.
+
+**Osteoarthritis Of The Ankle**
+Degenerative joint disease of the ankle resulting in pain, stiffness, and reduced range of motion.
+
+**Rheumatoid Arthritis**
+Autoimmune disease causing joint deformities and inflammation, particularly in the forefoot and midfoot.
+
+**Calcaneal Apophysitis**
+Heel pain in growing children caused by irritation of the growth plate at the calcaneus (Sever’s Disease).
+
+**Foot Drop**
+Neurological condition resulting in inability to dorsiflex the foot, causing gait issues like toe dragging.
+
+**Balance Issues In Elderly**
+Common in geriatric patients with proprioceptive decline, muscle weakness, or fall risk.
+
+**Posterior Tibial Tendon Rupture**
+Advanced failure of the posterior tibial tendon, often requiring bracing to stabilize the medial column.
+
+**Pediatric Pronation**
+Flexible flatfoot in children, often benign but may require control if symptomatic.
+
+**Charcot Foot**
+Collapse of midfoot architecture in neuropathic patients, often diabetic, requiring total contact support.
+
+**Ankle Instability**
+Recurrent ankle sprains or giving-way sensation, usually due to ligament laxity.
+
+**Charcot Foot (Advanced)**
+End-stage collapse with rocker-bottom deformity; requires immobilization with a custom AFO.
+
+**Rheumatoid Arthritis With Ankle Deformity**
+Destruction of the ankle joint with joint instability and pain requiring bracing.
+
+**Severe Flatfoot**
+Stage II-III acquired flatfoot due to PTTD or ligament laxity, often requiring bracing.
+
+**Ankle Arthritis With Instability**
+Combination of degenerative joint disease and ligament laxity, increasing fall risk.
+
+`;
+    }
+
     const assistantHistory = messages.filter(m => m.role !== 'user');
 
-    const fewShotExamples = [
-      {
-        role: "user",
-        content: "Patient has chronic heel pain from plantar fasciitis."
-      },
-      {
-        role: "assistant",
-        content: `## Clinical Scenario
-Patient has plantar fasciitis and heel pain
-
-##Orthotic Recommendation
-**Device Style:** Athletica Sport Flex  
-**Shell Material:** Ploypropylene – moderate flex  
-**Posting:** 3° rearfoot varus post  
-**Additions:** Deep heel seat (5/8"), Hole in Heel Seat with O-Foam plug, 1/8" O-Foam heel cushion  
-**Topcover:** Full-length EVA35
-
-**Clinical Rationale:** This setup helps offload the plantar fascia by stabilizing the heel in slight varus and increasing surface contact. The deep heel seat improves rearfoot control, and Poron/EVA materials reduce impact forces at heel strike.`
-      },
-      {
-        role: "user",
-        content: "Patient is 80 years old with recurrent falls and balance issues."
-      },
-      {
-        role: "assistant",
-        content: `## AFO Recommendation
-**Device Style:** Moore Balance Brace
-
-**Clinical Rationale:** Ideal for fall-risk patients over 65. This brace supports both medial and lateral ankle motion while enhancing proprioception. Its low-profile design fits easily into orthopedic shoes, encouraging compliance and stability in gait.`
-      }
-    ];
-
-    const basePrompt = isAFO
-      ? {
-          role: "system",
-          content: `You are Orthotica AI. Only recommend AFOs produced by Orthotica Labs.
-
-## AFO Recommendation Format
-- **Device Style**: One of [Orthotica Brace, Articulated, Moore Balance Brace, SMOky, Dynamic Upright Independent or Unibody]
-- **Clinical Rationale**: One paragraph only
-
-DO NOT mention materials, posting, shell shape, or footwear unless asked.
-
-Use Markdown with:
-- ## headings
-- **bold** device names
-- no additional recommendations outside AFOs
-
-${rulesSummary}`
-        }
-      : {
-          role: "system",
-          content: `You are Orthotica AI, a clinical advisor working with foot specialists and orthotists.
+    const systemPrompt = {
+      role: "system",
+      content: `You are Orthotica AI, a clinical advisor working with foot specialists and orthotists.
 
 Speak in a professional, conversational tone — like you're consulting with a trusted colleague. Be warm but concise.
 
----
-
-## Orthotic Recommendations
-Include:
-- **Device Style** (Orthotica Labs only)
-- **Shell Material and Stiffness**
-- **Rearfoot and/or Forefoot Posting**
-- **Additions or Modifications**
-- **Topcover or Midlayer Material**
-- **Clinical Rationale**: Explain how each element benefits the pathology. Be specific.
-
-Device Styles include: Athletica Sport, Athletica Sport Flex, Athletica Runner, Core Fit, Fashionista Fit, Formal Fit, Accommodative Ultra, Pediatric Ultra, Stability Ultra, EP Hybrid, EVA Trilaminate
-
-Materials include: Polypropylen Shell or Graphite Shell (flex/flexible/stiff), Top Cover Material (Vinyl, Vegan Leather, EVA35, Neoprene), Midlayer Material (O-Foam, Z-Foam, EVA25)
-
----
-
-## AFO Recommendations
-Include:
-- **Device Style** (e.g., Orthotica Brace, Articulated, Moore Balance Brace, SMOky, Dynamic Upright Independent or Unibody)
-- **Clinical Rationale**: Explain clearly how the brace supports gait, stability, or ankle motion.
-
-DO NOT include:
-- Material selection
-- Posting
-- Footwear recommendations (unless asked)
-- Any non-Orthotica product
-
----
-
 Use Markdown formatting with clear headings and bullet points.
 
-${rulesSummary}`
-        };
+You are also familiar with the following clinical conditions:
+
+**Plantar Fasciitis**
+Inflammation of the plantar fascia causing heel pain, especially in the morning or after periods of rest.
+
+**Neuroma**
+A painful condition, often between the 3rd and 4th toes, caused by thickened nerve tissue (Morton’s neuroma).
+
+**Achilles Tendinitis**
+Overuse injury of the Achilles tendon leading to posterior heel pain and swelling.
+
+**Hallux Rigidus**
+Arthritic stiffening of the big toe joint (1st MTP), limiting dorsiflexion and causing pain during toe-off.
+
+**Metatarsalgia**
+Forefoot pain centered around the metatarsal heads, usually caused by overload or dropped metatarsal arch.
+
+**Pes Cavus**
+High-arched foot deformity that creates lateral column pain and instability during gait.
+
+**Flat Feet**
+Loss of medial arch leading to overpronation, fatigue, and possible progression to tendon dysfunction.
+
+**Posterior Tibial Tendon Dysfunction**
+Progressive collapse of the arch due to posterior tibial tendon weakness, often causing medial pain and flatfoot.
+
+**Diabetic Neuropathy**
+Loss of protective sensation in the foot due to diabetes, increasing risk of ulceration and injury.
+
+**Limb Length Discrepancy**
+One leg is shorter than the other, often causing pelvic tilt, gait asymmetry, or low back pain.
+
+**Heel Spur**
+Bony outgrowth at the calcaneus often associated with plantar fasciitis and heel pain.
+
+**Hallux Valgus**
+Deformity of the 1st MTP joint with lateral deviation of the big toe and a prominent medial bunion.
+
+**Tarsal Tunnel Syndrome**
+Compression of the tibial nerve in the tarsal tunnel causing burning, tingling, or numbness in the foot.
+
+**Osteoarthritis Of The Ankle**
+Degenerative joint disease of the ankle resulting in pain, stiffness, and reduced range of motion.
+
+**Rheumatoid Arthritis**
+Autoimmune disease causing joint deformities and inflammation, particularly in the forefoot and midfoot.
+
+**Calcaneal Apophysitis**
+Heel pain in growing children caused by irritation of the growth plate at the calcaneus (Sever’s Disease).
+
+**Foot Drop**
+Neurological condition resulting in inability to dorsiflex the foot, causing gait issues like toe dragging.
+
+**Balance Issues In Elderly**
+Common in geriatric patients with proprioceptive decline, muscle weakness, or fall risk.
+
+**Posterior Tibial Tendon Rupture**
+Advanced failure of the posterior tibial tendon, often requiring bracing to stabilize the medial column.
+
+**Pediatric Pronation**
+Flexible flatfoot in children, often benign but may require control if symptomatic.
+
+**Charcot Foot**
+Collapse of midfoot architecture in neuropathic patients, often diabetic, requiring total contact support.
+
+**Ankle Instability**
+Recurrent ankle sprains or giving-way sensation, usually due to ligament laxity.
+
+**Charcot Foot (Advanced)**
+End-stage collapse with rocker-bottom deformity; requires immobilization with a custom AFO.
+
+**Rheumatoid Arthritis With Ankle Deformity**
+Destruction of the ankle joint with joint instability and pain requiring bracing.
+
+**Severe Flatfoot**
+Stage II-III acquired flatfoot due to PTTD or ligament laxity, often requiring bracing.
+
+**Ankle Arthritis With Instability**
+Combination of degenerative joint disease and ligament laxity, increasing fall risk.\n\n${rulesSummary}`
+    };
 
     const updatedMessages = [
-      basePrompt,
-      ...fewShotExamples,
+      systemPrompt,
       { role: "user", content: lastUserMsg },
       ...assistantHistory
     ];
