@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
     const matchedMods = [];
     let clinicalRules = {};
-    let deviceType = '';
+    let deviceType = ''; // Will be "AFO" or "Orthotic"
 
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
@@ -96,7 +96,7 @@ Explain clearly and briefly why the selected device is appropriate.
 DO NOT return both an orthotic and an AFO.
 DO NOT include footwear unless the user mentions shoes.
 
-\${summariesText}\${rulesSummary}\`
+${summariesText}${rulesSummary}`
     };
 
     const updatedMessages = [
@@ -109,7 +109,7 @@ DO NOT include footwear unless the user mentions shoes.
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": \`Bearer \${apiKey}\`
+        "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: "gpt-4o",
@@ -130,4 +130,4 @@ DO NOT include footwear unless the user mentions shoes.
   } catch (err) {
     res.status(500).json({ error: "Internal server error", detail: err.toString() });
   }
-}
+};
