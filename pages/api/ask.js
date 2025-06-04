@@ -50,7 +50,7 @@ export default async function handler(req, res) {
 
     const systemPrompt = {
       role: "system",
-      content: \`You are Orthotica AI, a clinical assistant for Orthotica Labs.
+      content: `You are Orthotica AI, a clinical assistant for Orthotica Labs.
 
 You ONLY recommend one device: either an Orthotica Labs custom orthotic OR a custom AFO — never both.
 
