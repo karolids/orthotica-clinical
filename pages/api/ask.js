@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content || '';
     const matchedMods = [];
     let clinicalRules = {};
-    let deviceType = ''; // Will be "AFO" or "Orthotic"
+    let deviceType = '';
 
     try {
       const rulesData = fs.readFileSync(rulesPath, "utf-8");
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
 
     const systemPrompt = {
       role: "system",
-      content: `You are Orthotica AI, a clinical assistant for Orthotica Labs.
+      content: \`You are Orthotica AI, a clinical assistant for Orthotica Labs.
 
 You ONLY recommend one device: either an Orthotica Labs custom orthotic OR a custom AFO — never both.
 
@@ -96,7 +96,7 @@ Explain clearly and briefly why the selected device is appropriate.
 DO NOT return both an orthotic and an AFO.
 DO NOT include footwear unless the user mentions shoes.
 
-${summariesText}${rulesSummary}`
+\${summariesText}\${rulesSummary}\`
     };
 
     const updatedMessages = [
@@ -109,7 +109,7 @@ ${summariesText}${rulesSummary}`
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
+        "Authorization": \`Bearer \${apiKey}\`
       },
       body: JSON.stringify({
         model: "gpt-4o",
